@@ -74,7 +74,7 @@ impl Set {
         let mut result = Self::default();
 
         for color in colors {
-            let (count, color) = color.split_once(" ").unwrap();
+            let (count, color) = color.split_once(' ').unwrap();
             let count = count.parse().unwrap();
             match color {
                 "red" => result.r = count,
