@@ -30,7 +30,6 @@ fn part2(input: &str) -> u64 {
     cards.iter().map(|card| card.copies).sum()
 }
 
-#[derive(Clone)]
 struct Card {
     copies: u64,
     winning: HashSet<u64>,
