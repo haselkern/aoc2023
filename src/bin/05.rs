@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
 
 const INPUT: &str = include_str!("../../input/05");
 const TEST_INPUT: &str = include_str!("../../input/05-test");
@@ -22,7 +23,14 @@ fn part1(input: &str) -> u64 {
 }
 
 fn part2(input: &str) -> u64 {
-    0
+    let garden = Garden::parse(input);
+    garden
+        .seed_ranges
+        .par_iter()
+        .flat_map(|range| range.par_iter())
+        .map(|seed| garden.map(seed))
+        .min()
+        .unwrap()
 }
 
 #[derive(Debug)]
@@ -66,6 +74,13 @@ impl Garden {
 struct SeedRange {
     start: u64,
     length: u64,
+}
+
+impl SeedRange {
+    fn par_iter(&self) -> impl ParallelIterator<Item = u64> {
+        let end = self.start + self.length;
+        (self.start..=end).into_par_iter()
+    }
 }
 
 #[derive(Debug)]
