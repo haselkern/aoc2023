@@ -1,3 +1,4 @@
+use aoc2023::parse_ws_separated;
 use itertools::Itertools;
 use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
 
@@ -46,7 +47,7 @@ impl Garden {
         let seeds = blocks.next().unwrap().strip_prefix("seeds: ").unwrap();
         let maps = blocks.map(Map::parse).collect();
 
-        let simple_seeds = parse_ws_numbers(seeds);
+        let simple_seeds = parse_ws_separated(seeds).collect_vec();
         let seed_ranges = simple_seeds
             .iter()
             .copied()
@@ -125,17 +126,12 @@ impl MappedRange {
     }
 
     fn parse(line: &str) -> Self {
-        let [destination, source, length] = parse_ws_numbers(line).try_into().unwrap();
+        let [destination, source, length] =
+            parse_ws_separated(line).collect_vec().try_into().unwrap();
         Self {
             destination,
             source,
             length,
         }
     }
-}
-
-fn parse_ws_numbers(s: &str) -> Vec<u64> {
-    s.split_ascii_whitespace()
-        .map(|s| s.parse().unwrap())
-        .collect()
 }

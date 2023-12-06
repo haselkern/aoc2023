@@ -1,3 +1,4 @@
+use aoc2023::parse_ws_separated;
 use std::collections::HashSet;
 
 const INPUT: &str = include_str!("../../input/04");
@@ -56,18 +57,12 @@ impl Card {
 
         Self {
             copies: 1,
-            winning: parse_numbers(winning),
-            owned: parse_numbers(owned),
+            winning: parse_ws_separated(winning).collect(),
+            owned: parse_ws_separated(owned).collect(),
         }
     }
 }
 
 fn parse_cards(input: &str) -> impl Iterator<Item = Card> + '_ {
     input.lines().map(Card::parse)
-}
-
-fn parse_numbers(line: &str) -> HashSet<u64> {
-    line.split_ascii_whitespace()
-        .map(|n| n.parse().unwrap())
-        .collect()
 }
