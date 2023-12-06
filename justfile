@@ -10,7 +10,7 @@ run: _output-folder
     rustfmt src/bin/{{day}}.rs
     cargo clippy
     # Hide warning here because we just ran clippy
-    RUSTFLAGS=-Awarnings cargo run --release --bin {{day}} | tee "output/{{day}}.log"
+    RUSTFLAGS=-Awarnings cargo run --release --bin {{day}}
 
 # Begin working on todays problem. Downloads input, creates template and opens the problem and code.
 begin: _input-folder
