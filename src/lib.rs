@@ -1,3 +1,5 @@
+//! This library contains useful helper functions that may be useful in several problems.
+
 use std::{
     fmt::{Debug, Display},
     ops::{Div, Mul, Rem},
@@ -6,7 +8,27 @@ use std::{
 
 /// Parse a whitespace separated list of things.
 ///
-/// Panics on parse error.
+/// This works with any type that implements [`FromStr`].
+///
+/// Panics on parse error to keep things simple.
+///
+/// ```rust
+/// # use aoc2023::parse_ws_separated;
+/// let mut nums = parse_ws_separated("1 2 3");
+/// assert_eq!(nums.next(), Some(1));
+/// assert_eq!(nums.next(), Some(2));
+/// assert_eq!(nums.next(), Some(3));
+/// assert_eq!(nums.next(), None);
+/// ```
+///
+/// ```rust
+/// # use aoc2023::parse_ws_separated;
+/// # use std::net::Ipv4Addr;
+/// let mut ips = parse_ws_separated("127.0.0.1      10.0.0.1");
+/// assert_eq!(ips.next(), Some(Ipv4Addr::new(127, 0, 0, 1)));
+/// assert_eq!(ips.next(), Some(Ipv4Addr::new(10, 0, 0, 1)));
+/// assert_eq!(ips.next(), None);
+/// ```
 pub fn parse_ws_separated<T>(s: &str) -> impl DoubleEndedIterator<Item = T> + '_
 where
     T: FromStr,
@@ -17,7 +39,7 @@ where
 
 /// Concatenate two things.
 ///
-/// Panics if the concatenation is not be parseable.
+/// Panics if the concatenation is not be parseable to keep things simple.
 ///
 /// ```rust
 /// # use aoc2023::concat;
@@ -33,7 +55,14 @@ where
 
 /// Return the greatest common divisor.
 ///
-/// https://en.wikipedia.org/wiki/Euclidean_algorithm
+/// <https://en.wikipedia.org/wiki/Euclidean_algorithm>
+///
+/// ```rust
+/// # use aoc2023::gcd;
+/// assert_eq!(gcd(12, 8), 4);
+/// # assert_eq!(gcd(105, 252), 21);
+/// # assert_eq!(gcd(252, 105), 21);
+/// ```
 pub fn gcd<T>(mut a: T, mut b: T) -> T
 where
     T: PartialEq + Default + Rem<Output = T> + Copy,
@@ -48,28 +77,17 @@ where
 
 /// Return the least common multiple.
 ///
-/// https://en.wikipedia.org/wiki/Least_common_multiple
+/// <https://en.wikipedia.org/wiki/Least_common_multiple>
+///
+/// ```rust
+/// # use aoc2023::lcm;
+/// assert_eq!(lcm(4, 6), 12);
+/// # assert_eq!(lcm(6, 4), 12);
+/// ```
 pub fn lcm<T>(a: T, b: T) -> T
 where
     T: PartialEq + Default + Rem<Output = T> + Div<Output = T> + Mul<Output = T> + Copy,
 {
     let gcd = gcd(a, b);
     a / gcd * b
-}
-
-#[cfg(test)]
-mod test {
-    use crate::*;
-
-    #[test]
-    fn test_gcd() {
-        assert_eq!(gcd(252, 105), 21);
-        assert_eq!(gcd(105, 252), 21);
-    }
-
-    #[test]
-    fn test_lcm() {
-        assert_eq!(lcm(4, 6), 12);
-        assert_eq!(lcm(6, 4), 12);
-    }
 }
