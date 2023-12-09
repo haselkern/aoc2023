@@ -7,7 +7,7 @@ use std::{
 /// Parse a whitespace separated list of things.
 ///
 /// Panics on parse error.
-pub fn parse_ws_separated<T>(s: &str) -> impl Iterator<Item = T> + '_
+pub fn parse_ws_separated<T>(s: &str) -> impl DoubleEndedIterator<Item = T> + '_
 where
     T: FromStr,
     <T as FromStr>::Err: Debug,
