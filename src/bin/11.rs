@@ -31,7 +31,7 @@ struct Universe {
 impl Universe {
     fn expand(&mut self, factor: usize) {
         let add = factor - 1;
-        let dimensions = self.dimensions();
+        let dimensions = self.galaxies.iter().copied().reduce(Vec2::max).unwrap();
 
         // Add additional columns
         for x in (0..=dimensions.x).rev() {
@@ -58,13 +58,6 @@ impl Universe {
                 .filter(|g| g.y > y)
                 .for_each(|g| g.y += add);
         }
-    }
-
-    fn dimensions(&self) -> Galaxy {
-        self.galaxies.iter().fold(Galaxy::default(), |a, b| Galaxy {
-            x: a.x.max(b.x),
-            y: a.y.max(b.y),
-        })
     }
 
     fn sum_of_distances(&self) -> usize {

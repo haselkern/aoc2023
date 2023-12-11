@@ -121,6 +121,26 @@ impl<T> Vec2<T> {
     }
 }
 
+impl<T> Vec2<T>
+where
+    T: Ord,
+{
+    /// Returns the component-wise maximum of this vector and the other.
+    ///
+    /// ```rust
+    /// # use aoc2023::Vec2;
+    /// let a = Vec2::new(1, 5);
+    /// let b = Vec2::new(2, -5);
+    /// assert_eq!(a.max(b), Vec2::new(2, 5));
+    /// ```
+    pub fn max(self, other: Self) -> Self {
+        Self {
+            x: self.x.max(other.x),
+            y: self.y.max(other.y),
+        }
+    }
+}
+
 impl<T> Add for Vec2<T>
 where
     T: Add<Output = T>,

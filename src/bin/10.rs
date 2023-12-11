@@ -67,10 +67,7 @@ impl Maze {
     /// Count the number of tiles inside the polygon described by the pipe loop
     /// using the [winding number algorithm](https://en.wikipedia.org/wiki/Point_in_polygon#Winding_number_algorithm).
     fn count_empty_tiles_inside(&self) -> usize {
-        let max_dimensions = self.tiles.keys().fold(Vec2::<i64>::default(), |a, b| Vec2 {
-            x: a.x.max(b.x),
-            y: a.y.max(b.y),
-        });
+        let max_dimensions = self.tiles.keys().copied().reduce(Vec2::max).unwrap();
         let pipe_loop = self.pipe_loop();
 
         let mut tiles_inside = 0;
