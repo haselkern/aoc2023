@@ -14,7 +14,7 @@ run:
 
 # Begin working on todays problem. Downloads input, creates template and opens the problem and code.
 begin: _input-folder
-    echo "const INPUT: &str = include_str!(\"../../input/{{day}}\"); const TEST_INPUT: &str = include_str!(\"../../input/{{day}}-test\"); fn main() {}" >> {{file}}
+    cp -n template.rs src/bin/{{day}}.rs
     rustfmt {{file}}
     curl --silent "https://adventofcode.com/{{year}}/day/{{dayWithout0}}/input" -H "Cookie: session=$AOC_SESSION" > "input/{{day}}"
     touch input/{{day}}-test
